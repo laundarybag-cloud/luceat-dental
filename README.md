@@ -1,36 +1,96 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# Luceat Dental — Clinic Suite
 
-## Getting Started
+A practice-management front end for a dental clinic, built as a working
+demonstration: scheduling, the patient register, clinical records, treatment
+plans, billing, a knowledge base and an AI assistant console, across fourteen
+modules.
 
-First, run the development server:
+**Fully bilingual — English and Arabic, with correct right-to-left layout.**
+
+> No backend is connected. Every figure on screen is derived from one set of
+> fixtures, and anything that would need a server says so plainly instead of
+> pretending to save.
+
+---
+
+## Running it
 
 ```bash
+npm install
 npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+Then open <http://localhost:3000>.
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+```bash
+npm run build && npm start   # production build
+npx tsc --noEmit             # typecheck
+npx next lint --dir src      # lint
+```
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+Requires Node 20 or newer.
 
-## Learn More
+## What is in it
 
-To learn more about Next.js, take a look at the following resources:
+| Module | What it does |
+| --- | --- |
+| Overview | Clinic-wide KPIs, today's chair-side schedule, revenue and outcome charts, derived alerts |
+| Appointments | Day, week and month views; booking with conflict and rota checks |
+| Patients | Register, full profile, dental chart, history, documents, notes |
+| Doctors | Directory, profiles, working rotas, service assignments |
+| Services | Catalogue with pricing, duration and clinician coverage |
+| Medical Records | Clinical notes, diagnoses, imaging, access log, role-gated |
+| Treatment Plans | Multi-session sequencing with costs and scheduling |
+| Payments | Invoices derived from delivered treatment, payments, refunds, revenue analysis |
+| Knowledge Centre | Articles the patient assistant may answer from, with clinical approval |
+| AI Assistant | Conversation review, outcomes, safety rules, knowledge coverage |
+| Reports | Revenue, appointments, clinicians, services, patients, assistant |
+| Users | Team accounts, roles, permission matrix, access history |
+| Settings | Clinic hours, booking rules, identity, notifications |
+| Notifications | Derived alert feed, delivery log and rules |
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+## How it is put together
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+**One source of truth.** Invoices are derived from completed appointments and
+delivered treatment-plan sessions rather than stored separately; a service's
+assigned clinicians are derived from the doctor profiles; the dashboard,
+reports and alerts all read the same fixtures. Two screens cannot disagree,
+because there is only one number.
 
-## Deploy on Vercel
+**Honest about its limits.** Where an action would need a server — saving a
+clinical note, emailing an invoice, creating a staff account — the form still
+validates, and then says clearly that nothing was stored. The one export that
+is real (Reports → CSV) says so too.
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+**Permissions are a UI concern, and say so.** The role switcher changes what
+the interface shows. The records screen states in as many words that this is
+not a security boundary until a backend enforces the same rules.
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+## Bilingual support
+
+Switch language from the globe in the top bar. The choice is remembered and
+sets direction, typography and formatting together.
+
+- **Interface copy** lives in `src/locales/`. `en.ts` is the source of truth
+  and `ar.ts` is typed against it, so adding an English string without its
+  Arabic pair is a **compile error** — both languages stay complete by
+  construction, not by discipline.
+- **Clinic content** — service names, treatment labels, specialties, plan
+  titles — lives with the data in `src/lib/mock/content-ar.ts`, because in a
+  connected build that text comes from the API, which is where a clinic edits
+  its own catalogue.
+- Dates, numbers and currency follow the active language through `Intl`.
+  Arabic uses `ar-EG` with **Latin digits**: this is a panel full of tabular
+  money and times, and mixing numeral systems down a column makes totals hard
+  to compare. That is standard in medical and financial software in Egypt.
+- Direction is not separately settable — it follows the language.
+
+People's names are not translated. A record stores a name once and shows it as
+given.
+
+## Stack
+
+Next.js (App Router) · TypeScript · Tailwind CSS · Recharts · Radix primitives
+
+`DEVELOPMENT_PROGRESS.md` records the design decisions and the trade-offs
+behind them, including the ones still outstanding.
