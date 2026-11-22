@@ -1,0 +1,243 @@
+@import "tailwindcss";
+
+/* ============================================================================
+   LUCEAT DENTAL — DESIGN SYSTEM
+   Premium healthcare SaaS. Calm, dense, precise.
+   Everything below is a token: no raw hex values in components.
+   ========================================================================== */
+
+@theme {
+  /* ---- Brand ------------------------------------------------------------ */
+  --color-forest-50: #f2f7f5;
+  --color-forest-100: #d5e8df;
+  --color-forest-200: #b2d3c6;
+  --color-forest-300: #86b7a5;
+  --color-forest-400: #4f9381;
+  --color-forest-500: #236b5c;
+  --color-forest-600: #1b5549;
+  --color-forest-700: #16483e;
+  --color-forest-800: #123c35;
+  --color-forest-900: #0d2d28;
+  --color-forest-950: #08201c;
+
+  --color-gold-100: #f6eedf;
+  --color-gold-200: #ecdcbf;
+  --color-gold-300: #d7b98e;
+  --color-gold-400: #c29f69;
+  --color-gold-500: #a07d48;
+  /* Text-safe gold: 5.1:1 on --color-gold-100. */
+  --color-gold-600: #7e5f2f;
+
+  /* ---- Surfaces & text -------------------------------------------------- */
+  --color-canvas: #f5f7f4;
+  --color-surface: #ffffff;
+  --color-surface-sunken: #f0f3ef;
+  /* Grey ramp is tuned so every step clears WCAG AA (4.5:1) on --color-surface:
+     ink 15.9:1 · soft 8.6:1 · muted 5.5:1 · faint 4.6:1. */
+  --color-ink: #172b27;
+  --color-ink-soft: #3f4f4a;
+  --color-ink-muted: #5b6b65;
+  --color-ink-faint: #697772;
+  --color-line: #e7ece8;
+  --color-line-strong: #d6ded9;
+
+  /* ---- Status (subtle, clinical) ---------------------------------------- */
+  --color-status-pending: #946318;
+  --color-status-pending-bg: #fbf3e4;
+  --color-status-confirmed: #236b5c;
+  --color-status-confirmed-bg: #e3efea;
+  --color-status-checkedin: #2b6ca8;
+  --color-status-checkedin-bg: #e7f0f8;
+  --color-status-progress: #6d52a8;
+  --color-status-progress-bg: #efebf8;
+  --color-status-completed: #14604e;
+  --color-status-completed-bg: #dcece6;
+  --color-status-cancelled: #a6454a;
+  --color-status-cancelled-bg: #faeaea;
+  --color-status-noshow: #6b7670;
+  --color-status-noshow-bg: #eef1ef;
+
+  /* ---- Data visualisation ----------------------------------------------- */
+  --color-chart-1: #236b5c;
+  --color-chart-2: #86b7a5;
+  --color-chart-3: #d7b98e;
+  --color-chart-4: #2b6ca8;
+  --color-chart-5: #c08a7c;
+  --color-chart-grid: #eaefeb;
+
+  /* ---- Type ------------------------------------------------------------- */
+  --font-sans: var(--font-inter), ui-sans-serif, system-ui, sans-serif;
+  --font-arabic: var(--font-cairo), var(--font-inter), sans-serif;
+
+  --text-display: 1.75rem;
+  --text-display--line-height: 2.125rem;
+  --text-display--letter-spacing: -0.025em;
+  --text-display--font-weight: 650;
+
+  --text-title: 1.3125rem;
+  --text-title--line-height: 1.75rem;
+  --text-title--letter-spacing: -0.02em;
+  --text-title--font-weight: 620;
+
+  --text-section: 0.9375rem;
+  --text-section--line-height: 1.375rem;
+  --text-section--letter-spacing: -0.011em;
+  --text-section--font-weight: 600;
+
+  --text-card: 0.875rem;
+  --text-card--line-height: 1.25rem;
+  --text-card--letter-spacing: -0.008em;
+  --text-card--font-weight: 600;
+
+  --text-body: 0.875rem;
+  --text-body--line-height: 1.375rem;
+
+  --text-small: 0.8125rem;
+  --text-small--line-height: 1.25rem;
+
+  --text-label: 0.6875rem;
+  --text-label--line-height: 1rem;
+  --text-label--letter-spacing: 0.06em;
+  --text-label--font-weight: 600;
+
+  --text-metric: 1.625rem;
+  --text-metric--line-height: 1.875rem;
+  --text-metric--letter-spacing: -0.03em;
+  --text-metric--font-weight: 650;
+
+  /* ---- Radius ----------------------------------------------------------- */
+  --radius-field: 0.5rem;
+  --radius-card: 0.75rem;
+  --radius-panel: 0.875rem;
+
+  /* ---- Elevation (barely there, on purpose) ----------------------------- */
+  --shadow-card: 0 1px 2px rgba(18, 60, 53, 0.04), 0 1px 1px rgba(18, 60, 53, 0.03);
+  --shadow-raised: 0 2px 4px rgba(18, 60, 53, 0.05), 0 6px 16px -6px rgba(18, 60, 53, 0.1);
+  --shadow-overlay: 0 12px 32px -8px rgba(13, 45, 40, 0.18), 0 2px 8px rgba(13, 45, 40, 0.06);
+
+  /* ---- Motion ----------------------------------------------------------- */
+  --ease-out-soft: cubic-bezier(0.22, 1, 0.36, 1);
+
+  --animate-fade-up: fade-up 0.35s var(--ease-out-soft) both;
+  --animate-shimmer: shimmer 1.6s ease-in-out infinite;
+}
+
+@keyframes fade-up {
+  from { opacity: 0; transform: translateY(6px); }
+  to   { opacity: 1; transform: none; }
+}
+@keyframes shimmer {
+  0%, 100% { opacity: 1; }
+  50%      { opacity: 0.45; }
+}
+/* Side sheet: slides in from the inline end, so it enters from the right in
+   LTR and the left in RTL without a second keyframe. */
+@keyframes drawer-in {
+  from { opacity: 0; transform: translateX(var(--drawer-from, 100%)); }
+  to   { opacity: 1; transform: none; }
+}
+:root { --drawer-from: 100%; }
+[dir="rtl"] { --drawer-from: -100%; }
+@keyframes toast-in {
+  from { opacity: 0; transform: translateY(10px) scale(0.98); }
+  to   { opacity: 1; transform: none; }
+}
+
+/* ---- Base ---------------------------------------------------------------- */
+@layer base {
+  * {
+    border-color: var(--color-line);
+  }
+  html {
+    -webkit-text-size-adjust: 100%;
+  }
+  body {
+    background-color: var(--color-canvas);
+    color: var(--color-ink);
+    font-family: var(--font-sans);
+    font-size: 0.875rem;
+    line-height: 1.375rem;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+    font-feature-settings: "cv05" 1, "cv11" 1, "ss01" 1;
+  }
+  :lang(ar) body,
+  /* The Arabic face follows the LANGUAGE, not the direction: Cairo is the
+     right face for Arabic text, and keying it to `dir` would also apply it
+     to a right-to-left layout that happened to be showing English. */
+  html[lang="ar"] body {
+    font-family: var(--font-arabic);
+  }
+  /* Numerals should always align in tables and metrics. */
+  .tnum,
+  table,
+  [data-metric] {
+    font-variant-numeric: tabular-nums;
+  }
+  /* Figures such as "4 / 6" or "$243.8k" must not be reordered by bidi
+     when the shell is in Arabic RTL. */
+  [data-metric] {
+    direction: ltr;
+    unicode-bidi: isolate;
+  }
+  [dir="rtl"] [data-metric] {
+    text-align: right;
+  }
+  /* Some strings stay in their own language whatever the interface is set
+     to — a patient's English name, an article written in Arabic, a message
+     body quoted verbatim. `plaintext` lets each block take its direction
+     from its own first strong character, so those read correctly either way
+     and the sentence's full stop never jumps to the far side. Layout
+     mirroring is untouched. */
+  [dir="rtl"]
+    :is(main, [role="dialog"])
+    :is(p, h1, h2, h3, h4, li, dt, dd, label, figcaption) {
+    unicode-bidi: plaintext;
+  }
+  ::selection {
+    background: var(--color-forest-100);
+    color: var(--color-forest-900);
+  }
+  :focus-visible {
+    outline: 2px solid var(--color-forest-400);
+    outline-offset: 2px;
+    border-radius: 4px;
+  }
+}
+
+/* ---- Utilities ----------------------------------------------------------- */
+@utility scrollbar-slim {
+  scrollbar-width: thin;
+  scrollbar-color: var(--color-line-strong) transparent;
+  &::-webkit-scrollbar { width: 8px; height: 8px; }
+  &::-webkit-scrollbar-thumb {
+    background: var(--color-line-strong);
+    border-radius: 999px;
+    border: 2px solid transparent;
+    background-clip: content-box;
+  }
+  &::-webkit-scrollbar-track { background: transparent; }
+}
+
+/* Sidebar lives on a dark surface and needs its own scrollbar treatment. */
+@utility scrollbar-dark {
+  scrollbar-width: thin;
+  scrollbar-color: rgba(255, 255, 255, 0.16) transparent;
+  &::-webkit-scrollbar { width: 8px; }
+  &::-webkit-scrollbar-thumb {
+    background: rgba(255, 255, 255, 0.16);
+    border-radius: 999px;
+    border: 2px solid transparent;
+    background-clip: content-box;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+  }
+}
